@@ -19,7 +19,7 @@ except Exception as e:
     st.stop()
 
 # --- TAMPILAN ANTARMUKA ---
-st.title("🎨 Anime Classifier: Manusia vs AI")
+st.title("Anime Classifier : Manusia vs AI")
 st.markdown("Deteksi keaslian gambar anime menggunakan arsitektur **MobileNetV2**.")
 st.divider()
 
@@ -52,11 +52,11 @@ if input_image is not None:
         # 4. Tampilkan Hasil (Threshold 0.5)
         st.divider()
         if score > 0.5:
-            st.success(f"### HASIL: **KARYA MANUSIA**")
+            st.success(f"### HASIL: KARYA MANUSIA")
             st.info(f"Tingkat Keyakinan: {score * 100:.2f}%")
         else:
-            st.error(f"### HASIL: **TERDETEKSI AI**")
+            st.error(f"### HASIL: TERDETEKSI AI")
             st.info(f"Tingkat Keyakinan: {(1 - score) * 100:.2f}%")
 
 st.divider()
-st.caption("Aplikasi ini menggunakan MobileNetV2 untuk efisiensi perangkat mobile.")
+st.caption("System ini menggunakan MobileNetV2 untuk efisiensi perangkat mobile.")
