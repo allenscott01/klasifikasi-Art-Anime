@@ -10,7 +10,7 @@ st.set_page_config(page_title="Anime Detector AI", layout="centered", page_icon=
 @st.cache_resource
 def load_trained_model():
     # Pastikan file 'model_anime_v2.h5' ada di folder yang sama
-return tf.keras.models.load_model('model_anime_v2_asli.h5')
+    return tf.keras.models.load_model('model_anime_v2_asli.h5')
 
 try:
     model = load_trained_model()
