@@ -10,7 +10,7 @@ st.set_page_config(page_title="Anime Detector AI", layout="centered")
 @st.cache_resource
 def load_trained_model():
     # Memuat model MobileNetV2 yang sudah dibuat[cite: 4, 5]
-    return tf.keras.models.load_model('model_anime_v2.h5')
+ return tf.keras.models.load_model('model_anime_v2_asli.h5')
 
 try:
     model = load_trained_model()
