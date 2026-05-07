@@ -53,34 +53,35 @@ if input_image is not None:
         img_array = np.expand_dims(img_array, axis=0)
 
         # B. Inferensi (Prediksi)
-        prediction = model.predict(img_array)
-        score = prediction[0][0]
+# ... (kode sebelumnya)
 
-        # C. Logika Ambang Batas Keyakinan (Confidence Threshold)
-        # Menghitung seberapa yakin model (0.0 - 1.0)
-        certainty = abs(score - 0.5) * 2 
+# 3. Inferensi (Prediksi)
+prediction = model.predict(img_array)
 
-        st.divider()
+# Ambil nilai dan paksa menjadi tipe data float standar Python
+# Gunakan np.clip untuk memastikan nilai tetap di rentang 0.0 - 1.0
+score = float(np.clip(prediction[0][0], 0.0, 1.0))
 
-        # D. Filter "Bukan Anime" / Ketidakpastian
-        if certainty < 0.25: # Jika model sangat ragu (skor dekat 0.5)
-            st.warning("⚠️ **Hasil Tidak Pasti.**")
-            st.write("Model ragu apakah ini anime atau objek lain. Pastikan gambar yang diunggah adalah ilustrasi anime yang jelas.")
-            st.info(f"Tingkat Keyakinan Rendah: {certainty * 100:.2f}%")
-        
-        else:
-            # E. Tampilkan Hasil Klasifikasi
-            if score > 0.5:
-                st.success(f"### HASIL: **KARYA MANUSIA**")
-                st.write("Model mendeteksi karakteristik guratan tangan manusia.")
-                st.progress(score) # Bar visualitas
-                st.info(f"Tingkat Keyakinan: {score * 100:.2f}%")
-            else:
-                st.error(f"### HASIL: **TERDETEKSI AI**")
-                st.write("Model mendeteksi pola repetitif khas generatif AI.")
-                st.progress(1 - score)
-                st.info(f"Tingkat Keyakinan: {(1 - score) * 100:.2f}%")
+# 4. Tampilkan Hasil
+st.divider()
 
+# Hitung Certainty (Keyakinan)
+certainty = float(np.clip(abs(score - 0.5) * 2, 0.0, 1.0))
+
+if certainty < 0.25:
+    st.warning("⚠️ Hasil Tidak Pasti.")
+else:
+    if score > 0.5:
+        st.success(f"### HASIL: **KARYA MANUSIA**")
+        # Pastikan nilai yang masuk ke st.progress adalah float murni
+        st.progress(score) 
+        st.info(f"Tingkat Keyakinan: {score * 100:.2f}%")
+    else:
+        st.error(f"### HASIL: **TERDETEKSI AI**")
+        # Gunakan max/min atau clip agar hasil (1 - score) tidak keluar dari 0.0 - 1.0
+        val_ai = float(np.clip(1.0 - score, 0.0, 1.0))
+        st.progress(val_ai)
+        st.info(f"Tingkat Keyakinan: {val_ai * 100:.2f}%")
 # --- 5. FOOTER ---
 st.divider()
 st.caption("🚀 Powered by MobileNetV2 Architecture | Optimized for Mobile Devices")
