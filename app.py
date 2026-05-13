@@ -18,27 +18,40 @@ except Exception as e:
     st.stop()
 
 # --- 3. TAMPILAN ANTARMUKA ---
-st.title(" Anime Klasifikasi")
-st.markdown("Unggah beberapa gambar sekaligus .")
+st.title("🎨 Anime Klasifikasi")
+st.markdown("Unggah dari galeri atau ambil foto langsung menggunakan kamera.")
 st.divider()
 
-# Parameter Utama: accept_multiple_files=True
+# --- FITUR BARU: KAMERA (Optimasi Mobile) ---
+camera_photo = st.camera_input("📸 Ambil foto gambar anime (Live)")
+
+# Fitur Multi-Upload (Tetap Ada)
 uploaded_files = st.file_uploader(
-    "Pilih satu atau lebih gambar anime...", 
+    "Pilih satu atau lebih gambar anime dari galeri...", 
     type=["jpg", "jpeg", "png"], 
     accept_multiple_files=True
 )
 
 # --- 4. PROSES KLASIFIKASI BERUNTUN ---
+# Gabungkan input kamera dan upload ke dalam satu list untuk diproses
+all_images = []
+
+if camera_photo:
+    all_images.append(camera_photo)
+
 if uploaded_files:
-    st.write(f" Menghitung total: **{len(uploaded_files)} gambar**")
+    all_images.extend(uploaded_files)
+
+if all_images:
+    st.write(f"📊 Menghitung total: **{len(all_images)} gambar**")
     
-    # Membuat container untuk hasil agar rapi
-    for uploaded_file in uploaded_files:
-        # Menggunakan expander agar hasil tiap gambar bisa dibuka-tutup (scannable)
-        with st.expander(f"📷 Hasil Analisis: {uploaded_file.name}"):
+    for uploaded_file in all_images:
+        # Penamaan judul expander
+        label_name = getattr(uploaded_file, 'name', 'Hasil Foto Kamera')
+        
+        with st.expander(f"📷 Analisis: {label_name}"):
             
-            # 1. Load & Tampilkan Gambar (Ukuran kecil di expander)
+            # 1. Load & Tampilkan Gambar
             image = Image.open(uploaded_file)
             st.image(image, width=250)
             
@@ -55,18 +68,18 @@ if uploaded_files:
 
             # 4. Filter Eliminasi (Threshold 0.4)
             if certainty < 0.4:
-                st.warning(" **Ditolak: Bukan Karakter Anime**")
+                st.warning("⚠️ **Ditolak: Bukan Karakter Anime**")
                 st.caption(f"Keyakinan model terlalu rendah ({certainty*100:.2f}%)")
             else:
                 if score > 0.5:
-                    st.success(f" **HASIL: KARYA MANUSIA**")
+                    st.success(f"✅ **HASIL: KARYA MANUSIA**")
                     st.progress(score)
                     st.write(f"Akurasi Prediksi: {score * 100:.2f}%")
                 else:
-                    st.error(f" **HASIL: TERDETEKSI AI**")
+                    st.error(f"🤖 **HASIL: TERDETEKSI AI**")
                     val_ai = 1.0 - score
                     st.progress(val_ai)
                     st.write(f"Akurasi Prediksi: {val_ai * 100:.2f}%")
 
 st.divider()
-st.caption("Batch Processing Mode | Powered by MobileNetV2")
+st.caption("Batch Processing Mode | Mobile Optimized | Powered by MobileNetV2")
