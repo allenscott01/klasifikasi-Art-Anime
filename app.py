@@ -18,7 +18,7 @@ except Exception as e:
     st.stop()
 
 # --- 3. TAMPILAN ANTARMUKA ---
-st.title("🎨 Anime Classifier : Multi-Upload Mode")
+st.title(" Anime Classifier : Multi-Upload Mode")
 st.markdown("Unggah beberapa gambar sekaligus untuk deteksi massal.")
 st.divider()
 
@@ -31,7 +31,7 @@ uploaded_files = st.file_uploader(
 
 # --- 4. PROSES KLASIFIKASI BERUNTUN ---
 if uploaded_files:
-    st.write(f"📊 Menghitung total: **{len(uploaded_files)} gambar**")
+    st.write(f" Menghitung total: **{len(uploaded_files)} gambar**")
     
     # Membuat container untuk hasil agar rapi
     for uploaded_file in uploaded_files:
