@@ -18,8 +18,8 @@ except Exception as e:
     st.stop()
 
 # --- 3. TAMPILAN ANTARMUKA ---
-st.title(" Anime Classifier : Multi-Upload Mode")
-st.markdown("Unggah beberapa gambar sekaligus untuk deteksi massal.")
+st.title(" Anime Klasifikasi")
+st.markdown("Unggah beberapa gambar sekaligus .")
 st.divider()
 
 # Parameter Utama: accept_multiple_files=True
@@ -55,15 +55,15 @@ if uploaded_files:
 
             # 4. Filter Eliminasi (Threshold 0.4)
             if certainty < 0.4:
-                st.warning("❌ **Ditolak: Bukan Karakter Anime**")
+                st.warning(" **Ditolak: Bukan Karakter Anime**")
                 st.caption(f"Keyakinan model terlalu rendah ({certainty*100:.2f}%)")
             else:
                 if score > 0.5:
-                    st.success(f"✅ **HASIL: KARYA MANUSIA**")
+                    st.success(f" **HASIL: KARYA MANUSIA**")
                     st.progress(score)
                     st.write(f"Akurasi Prediksi: {score * 100:.2f}%")
                 else:
-                    st.error(f"🤖 **HASIL: TERDETEKSI AI**")
+                    st.error(f" **HASIL: TERDETEKSI AI**")
                     val_ai = 1.0 - score
                     st.progress(val_ai)
                     st.write(f"Akurasi Prediksi: {val_ai * 100:.2f}%")
